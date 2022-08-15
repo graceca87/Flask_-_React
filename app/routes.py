@@ -14,4 +14,4 @@ def index():
 
 @app.route('/test')
 def test():
-    return '<h1>This is a test</h1>'
+    return render_template('test.html')
