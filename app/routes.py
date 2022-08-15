@@ -1,7 +1,5 @@
-from flask import Flask
+from app import app
 
-
-app = Flask(__name__)
 
 
 @app.route('/')
@@ -12,4 +10,3 @@ def index():
 @app.route('/test')
 def test():
     return 'This is a test'
-
