@@ -13,7 +13,11 @@ def index():
     return render_template('index.html',user=user_info, colors=colors)
 
 
-@app.route('/signup')
+@app.route('/signup', methods=["GET", "POST"])
 def signup():
     form = SignUpForm()
+    # if the form is submitted and all the data is valid
+    if form.validate_on_submit():
+        print('Form has been validated! Hooray!!!!')
+        print(form.email.data, form.username.data, form.password.data)
     return render_template('signup.html', form=form)
