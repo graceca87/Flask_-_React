@@ -4,4 +4,24 @@
 
 {% block content %}
 <h2 class="text-center">Sign Up Here!</h2>
+
+<form>
+    {{ form.csrf_token }}
+    <div class="form-group">
+        {{ form.email.label }}
+        {{ form.email(class='form-control', placeholder='Enter Email') }}
+
+        {{ form.username.label }}
+        {{ form.username(class='form-control', placeholder='Enter Username') }}
+
+        {{ form.password.label }}
+        {{ form.password(class='form-control', placeholder='Enter Password') }}
+
+        {{ form.confirm_pass.label }}
+        {{ form.confirm_pass(class='form-control', placeholder='Confirm Password') }}
+
+        {{ form.submit(class='btn btn-primary w-100 mt-3') }}
+    </div>
+</form>
+
 {% endblock content %}
