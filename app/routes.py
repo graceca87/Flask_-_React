@@ -1,6 +1,7 @@
 from app import app
 from flask import render_template
 from app.forms import SignUpForm
+from app.models import User
 
 
 @app.route('/')
@@ -19,5 +20,9 @@ def signup():
     # if the form is submitted and all the data is valid
     if form.validate_on_submit():
         print('Form has been validated! Hooray!!!!')
-        print(form.email.data, form.username.data, form.password.data)
+        email = form.email.data
+        username = form.username.data
+        password = form.password.data
+        new_user = User(email=email, username=username, password=password)
+        print(f"{new_user.username} has been created.")
     return render_template('signup.html', form=form)
