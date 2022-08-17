@@ -1,6 +1,6 @@
 from app import app
 from flask import render_template, redirect, url_for, flash
-from app.forms import SignUpForm
+from app.forms import SignUpForm, PostForm
 from app.models import User
 
 
@@ -33,3 +33,9 @@ def signup():
         flash(f"{new_user.username} has been created.", "success")
         return redirect(url_for('index'))
     return render_template('signup.html', form=form)
+
+
+@app.route('/create')
+def create():
+    form = PostForm()
+    return render_template('createpost.html', form=form)
