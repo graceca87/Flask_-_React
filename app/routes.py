@@ -23,6 +23,12 @@ def signup():
         email = form.email.data
         username = form.username.data
         password = form.password.data
+        # Before we add the user to the database, check to see if there is already a user with username or email
+        existing_user = User.query.filter((User.email == email) | (User.username == username)).first()
+        if existing_user:
+            flash('A user with that username or email already exists.', 'danger')
+            return redirect(url_for('signup'))
+            
         new_user = User(email=email, username=username, password=password)
         flash(f"{new_user.username} has been created.", "success")
         return redirect(url_for('index'))
