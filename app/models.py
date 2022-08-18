@@ -48,3 +48,9 @@ class Post(db.Model):
 
     def __repr__(self):
         return f"<Post {self.id} | {self.title}>"
+
+    def update(self, **kwargs):
+        for key, value in kwargs.items():
+            if key in {'title', 'body'}:
+                setattr(self, key, value)
+        db.session.commit()
