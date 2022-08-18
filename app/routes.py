@@ -1,6 +1,6 @@
 from app import app
 from flask import render_template, redirect, url_for, flash
-from flask_login import login_user, logout_user
+from flask_login import login_user, logout_user, login_required, current_user
 from app.forms import SignUpForm, PostForm, LoginForm
 from app.models import User, Post
 
@@ -37,6 +37,7 @@ def signup():
 
 
 @app.route('/create', methods=["GET", "POST"])
+@login_required
 def create():
     form = PostForm()
     if form.validate_on_submit():
@@ -44,7 +45,7 @@ def create():
         title = form.title.data
         body = form.body.data
         # Create a new instance of Post with the form data
-        new_post = Post(title=title, body=body, user_id=1)
+        new_post = Post(title=title, body=body, user_id=current_user.id)
         # flash a message saying the post was created
         flash(f'{new_post.title} has been created.', 'secondary')
         # Redirect back to home page
