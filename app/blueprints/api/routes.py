@@ -1,13 +1,14 @@
 from . import api
+from .auth import basic_auth
 from flask import jsonify, request
 from app.models import Post
 from app.models import User
 
 
-@api.route('/')
-def index():
-    names = ['Brian', 'Tatyana', 'Nate', 'Sam']
-    return jsonify(names)
+@api.route('/token')
+@basic_auth.login_required
+def get_token():
+    return 'Token'
 
 
 @api.route('/posts', methods=["GET"])
@@ -47,8 +48,16 @@ def create_post():
     # - [POST] api/users/ - Create a New User
     # [GET] /api/users/<id> - Get an Exsitsing User
 
-@api.route('/posts', methods=["POST"])
-def create_user():
+
+# get a user by id
+@api.route('users/<user_id>')
+def get_user(user_id):
+    user = User.query.get_or_404(user_id)
+    return jsonify(user.to_dict())
+
+# create a new user:
+@api.route('/users', methods=["POST"])
+def create_user(user_id):
     if not request.is_json:
         return jsonify({'error': 'Your request content-type must be application/json'}), 400
     # Get the data from the request body
@@ -59,10 +68,16 @@ def create_user():
             # if field not in request body, respond with a 400 error
             return jsonify({'error': f"'{field}' must be in request body"}), 400
     
+    # Get method refers to the primary key. That is what you will want to put into the params
     # Get fields from data dict
     email = data.get('email')
     username = data.get('username')
     password = data.get('password')
-    # Create new instance of post with data
+     # Before we add the user to the database, check to see if there is already a user with username or email
+    existing_user = User.query.filter((User.email == email) | (User.username == username)).first()
+    if existing_user:
+        return jsonify({"error": "User with username and/or email already exists"}), 
+        400
+     # Create new instance of user with request data    
     new_user = User(email=email, username=username, password=password)
     return jsonify(new_user.to_dict()), 201
