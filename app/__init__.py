@@ -19,5 +19,9 @@ login.login_message = 'You must be logged in to do that you silly goose'
 login.login_message_category = 'danger'
 
 
+from app.blueprints.api import api
+# adding everything that is part of that blueprint to this application
+app.register_blueprint(api)
+
 from . import routes, models
 
